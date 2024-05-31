@@ -26,9 +26,9 @@ import (
 	"fmt"
 	"time"
 
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/applyconfiguration/nodepools/v1beta1"
-	scheme "github.com/SimonRTC/kubeception/apis/clientset/versioned/scheme"
 	v1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/client/applyconfiguration/nodepools/v1beta1"
+	scheme "github.com/SimonRTC/kubeception/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"

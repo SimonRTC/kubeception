@@ -26,9 +26,9 @@ import (
 	"fmt"
 	"time"
 
-	clustersv1beta1 "github.com/SimonRTC/kubeception/apis/applyconfiguration/clusters/v1beta1"
-	scheme "github.com/SimonRTC/kubeception/apis/clientset/versioned/scheme"
 	v1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
+	clustersv1beta1 "github.com/SimonRTC/kubeception/client/applyconfiguration/clusters/v1beta1"
+	scheme "github.com/SimonRTC/kubeception/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"

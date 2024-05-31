@@ -21,11 +21,11 @@ limitations under the License.
 package fake
 
 import (
-	clientset "github.com/SimonRTC/kubeception/apis/clientset/versioned"
-	clustersv1beta1 "github.com/SimonRTC/kubeception/apis/clientset/versioned/typed/clusters/v1beta1"
-	fakeclustersv1beta1 "github.com/SimonRTC/kubeception/apis/clientset/versioned/typed/clusters/v1beta1/fake"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/clientset/versioned/typed/nodepools/v1beta1"
-	fakenodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/clientset/versioned/typed/nodepools/v1beta1/fake"
+	clientset "github.com/SimonRTC/kubeception/client/clientset/versioned"
+	clustersv1beta1 "github.com/SimonRTC/kubeception/client/clientset/versioned/typed/clusters/v1beta1"
+	fakeclustersv1beta1 "github.com/SimonRTC/kubeception/client/clientset/versioned/typed/clusters/v1beta1/fake"
+	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/client/clientset/versioned/typed/nodepools/v1beta1"
+	fakenodepoolsv1beta1 "github.com/SimonRTC/kubeception/client/clientset/versioned/typed/nodepools/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

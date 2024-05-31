@@ -24,10 +24,10 @@ import (
 	"context"
 	time "time"
 
-	versioned "github.com/SimonRTC/kubeception/apis/clientset/versioned"
-	internalinterfaces "github.com/SimonRTC/kubeception/apis/informers/externalversions/internalinterfaces"
-	v1beta1 "github.com/SimonRTC/kubeception/apis/listers/nodepools/v1beta1"
 	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	versioned "github.com/SimonRTC/kubeception/client/clientset/versioned"
+	internalinterfaces "github.com/SimonRTC/kubeception/client/informers/externalversions/internalinterfaces"
+	v1beta1 "github.com/SimonRTC/kubeception/client/listers/nodepools/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"

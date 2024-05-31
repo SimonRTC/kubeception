@@ -21,8 +21,8 @@ limitations under the License.
 package nodepools
 
 import (
-	internalinterfaces "github.com/SimonRTC/kubeception/apis/informers/externalversions/internalinterfaces"
-	v1beta1 "github.com/SimonRTC/kubeception/apis/informers/externalversions/nodepools/v1beta1"
+	internalinterfaces "github.com/SimonRTC/kubeception/client/informers/externalversions/internalinterfaces"
+	v1beta1 "github.com/SimonRTC/kubeception/client/informers/externalversions/nodepools/v1beta1"
 )
 
 // Interface provides access to each of this group's versions.

@@ -23,8 +23,8 @@ package v1beta1
 import (
 	"net/http"
 
-	"github.com/SimonRTC/kubeception/apis/clientset/versioned/scheme"
 	v1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	"github.com/SimonRTC/kubeception/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 

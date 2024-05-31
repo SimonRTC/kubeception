@@ -24,8 +24,8 @@ import (
 	"fmt"
 	"net/http"
 
-	clustersv1beta1 "github.com/SimonRTC/kubeception/apis/clientset/versioned/typed/clusters/v1beta1"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/clientset/versioned/typed/nodepools/v1beta1"
+	clustersv1beta1 "github.com/SimonRTC/kubeception/client/clientset/versioned/typed/clusters/v1beta1"
+	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/client/clientset/versioned/typed/nodepools/v1beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

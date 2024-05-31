@@ -21,7 +21,7 @@ limitations under the License.
 package v1beta1
 
 import (
-	internalinterfaces "github.com/SimonRTC/kubeception/apis/informers/externalversions/internalinterfaces"
+	internalinterfaces "github.com/SimonRTC/kubeception/client/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.

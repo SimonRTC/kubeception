@@ -21,10 +21,10 @@ limitations under the License.
 package applyconfiguration
 
 import (
-	clustersv1beta1 "github.com/SimonRTC/kubeception/apis/applyconfiguration/clusters/v1beta1"
-	applyconfigurationnodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/applyconfiguration/nodepools/v1beta1"
 	v1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
 	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	clustersv1beta1 "github.com/SimonRTC/kubeception/client/applyconfiguration/clusters/v1beta1"
+	applyconfigurationnodepoolsv1beta1 "github.com/SimonRTC/kubeception/client/applyconfiguration/nodepools/v1beta1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 )
 

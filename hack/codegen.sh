@@ -16,7 +16,7 @@ fi
 kube::codegen::gen_client \
     --with-watch \
     --with-applyconfig \
-    --output-dir "${PROJECT_DIR}/client" \
-    --output-pkg "github.com/SimonRTC/kubeception/apis" \
     --boilerplate "${SCRIPT_DIR}/boilerplate.go.txt" \
+    --output-dir "${PROJECT_DIR}/client" \
+    --output-pkg "github.com/SimonRTC/kubeception/client" \
     "${PROJECT_DIR}/apis"
