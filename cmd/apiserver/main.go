@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"net/http"
 
 	clustersv1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
 	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
@@ -58,6 +59,23 @@ func main() {
 			klog.Fatalf("Unable to install API group %q: %v", i, err)
 		}
 	}
+
+	// OpenAPI (Swagger v2)
+	swagger, err := aggregator.GenerateOpenAPIConfig(p.GenericAPIServer.Handler.GoRestfulContainer.RegisteredWebServices())
+	if err != nil {
+		klog.Fatal(err)
+	}
+
+	// handler.NewOpenAPIService(swagger) >> Must be improved before release
+	p.Handler.NonGoRestfulMux.Handle("/openapi/v2", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		data, err := swagger.MarshalJSON()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(data)
+	}))
 
 	_, cancel := context.WithCancel(context.Background())
 
