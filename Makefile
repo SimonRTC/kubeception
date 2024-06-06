@@ -22,20 +22,20 @@ protoc-gen-gogo:
 	cd "${PROJECT_DIR}/../protobuf-gogo" && go mod tidy
 	cd "${PROJECT_DIR}/../protobuf-gogo" && go build -o ${PROJECT_DIR}/bin/protoc-gen-gogo "./protoc-gen-gogo/main.go"
 
-gateway-build:
-	CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o ./bin/gateway-linux-amd64 ./cmd/gateway/main.go
-	CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o ./bin/gateway-linux-arm64 ./cmd/gateway/main.go
+apiserver-build:
+	CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o ./bin/apiserver-linux-amd64 ./cmd/apiserver/main.go
+	CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o ./bin/apiserver-linux-arm64 ./cmd/apiserver/main.go
 
 lifecycle-build:
 	CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o ./bin/lifecycle-linux-amd64 ./cmd/lifecycle/main.go
 	CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -o ./bin/lifecycle-linux-arm64 ./cmd/lifecycle/main.go
 
-gateway-buildah:
-	buildah manifest rm gateway 2> /dev/null || true
-	buildah manifest create gateway
-	buildah bud --tag "registry.scaleship.io/kubeception/gateway:${REPOSITORY_TAG}" --manifest gateway --arch amd64 --os linux --build-arg BINARY_OS=linux --build-arg BINARY_ARCH=amd64 .
-	buildah bud --tag "registry.scaleship.io/kubeception/gateway:${REPOSITORY_TAG}" --manifest gateway --arch arm64 --os linux --build-arg BINARY_OS=linux --build-arg BINARY_ARCH=arm64 .
-	buildah manifest push --all gateway "docker://registry.scaleship.io/kubeception/gateway:${REPOSITORY_TAG}"
+apiserver-buildah:
+	buildah manifest rm apiserver 2> /dev/null || true
+	buildah manifest create apiserver
+	buildah bud --tag "registry.scaleship.io/kubeception/apiserver:${REPOSITORY_TAG}" --manifest apiserver --arch amd64 --os linux --build-arg BINARY_OS=linux --build-arg BINARY_ARCH=amd64 .
+	buildah bud --tag "registry.scaleship.io/kubeception/apiserver:${REPOSITORY_TAG}" --manifest apiserver --arch arm64 --os linux --build-arg BINARY_OS=linux --build-arg BINARY_ARCH=arm64 .
+	buildah manifest push --all apiserver "docker://registry.scaleship.io/kubeception/apiserver:${REPOSITORY_TAG}"
 
 lifecycle-buildah:
 	buildah manifest rm lifecycle 2> /dev/null || true
@@ -46,7 +46,7 @@ lifecycle-buildah:
 
 clean:
 	go clean
-	cd ./bin/ && find . -maxdepth 1 -type f -name 'gateway-*' -delete
+	cd ./bin/ && find . -maxdepth 1 -type f -name 'apiserver-*' -delete
 	cd ./bin/ && find . -maxdepth 1 -type f -name 'lifecycle-*' -delete
-	buildah manifest rm gateway 2> /dev/null || true
+	buildah manifest rm apiserver 2> /dev/null || true
 	buildah manifest rm lifecycle 2> /dev/null || true
