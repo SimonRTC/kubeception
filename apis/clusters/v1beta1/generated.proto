@@ -38,6 +38,11 @@ message Cluster {
   // Specification of the desired behavior of a cluster.
   // +optional
   optional ClusterSpec spec = 2;
+
+  // Current status of a cluster.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional ClusterStatus status = 3;
 }
 
 // ClusterCondition describes current state of a cluster.
@@ -79,11 +84,6 @@ message ClusterSpec {
   // Version of the cluster.
   // +optional
   optional string version = 1;
-
-  // Current status of a cluster.
-  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
-  // +optional
-  optional ClusterStatus status = 2;
 }
 
 // ClusterStatus represents the current state of a cluster.

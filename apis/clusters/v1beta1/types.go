@@ -20,6 +20,11 @@ type Cluster struct {
 	// Specification of the desired behavior of a cluster.
 	// +optional
 	Spec ClusterSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+
+	// Current status of a cluster.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	Status ClusterStatus `json:"status" protobuf:"bytes,3,opt,name=status"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -41,11 +46,6 @@ type ClusterSpec struct {
 	// Version of the cluster.
 	// +optional
 	Version string `json:"version" protobuf:"bytes,1,opt,name=version"`
-
-	// Current status of a cluster.
-	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
-	// +optional
-	Status ClusterStatus `json:"status" protobuf:"bytes,2,opt,name=status"`
 }
 
 // ClusterStatus represents the current state of a cluster.
