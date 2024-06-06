@@ -45,6 +45,7 @@ type ClustersGetter interface {
 type ClusterInterface interface {
 	Create(ctx context.Context, cluster *v1beta1.Cluster, opts v1.CreateOptions) (*v1beta1.Cluster, error)
 	Update(ctx context.Context, cluster *v1beta1.Cluster, opts v1.UpdateOptions) (*v1beta1.Cluster, error)
+	UpdateStatus(ctx context.Context, cluster *v1beta1.Cluster, opts v1.UpdateOptions) (*v1beta1.Cluster, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
 	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.Cluster, error)
@@ -52,6 +53,7 @@ type ClusterInterface interface {
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Cluster, err error)
 	Apply(ctx context.Context, cluster *clustersv1beta1.ClusterApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Cluster, err error)
+	ApplyStatus(ctx context.Context, cluster *clustersv1beta1.ClusterApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Cluster, err error)
 	ClusterExpansion
 }
 
@@ -141,6 +143,22 @@ func (c *clusters) Update(ctx context.Context, cluster *v1beta1.Cluster, opts v1
 	return
 }
 
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *clusters) UpdateStatus(ctx context.Context, cluster *v1beta1.Cluster, opts v1.UpdateOptions) (result *v1beta1.Cluster, err error) {
+	result = &v1beta1.Cluster{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("clusters").
+		Name(cluster.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(cluster).
+		Do(ctx).
+		Into(result)
+	return
+}
+
 // Delete takes name of the cluster and deletes it. Returns an error if one occurs.
 func (c *clusters) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	return c.client.Delete().
@@ -202,6 +220,36 @@ func (c *clusters) Apply(ctx context.Context, cluster *clustersv1beta1.ClusterAp
 		Namespace(c.ns).
 		Resource("clusters").
 		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *clusters) ApplyStatus(ctx context.Context, cluster *clustersv1beta1.ClusterApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Cluster, err error) {
+	if cluster == nil {
+		return nil, fmt.Errorf("cluster provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(cluster)
+	if err != nil {
+		return nil, err
+	}
+
+	name := cluster.Name
+	if name == nil {
+		return nil, fmt.Errorf("cluster.Name must be provided to Apply")
+	}
+
+	result = &v1beta1.Cluster{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("clusters").
+		Name(*name).
+		SubResource("status").
 		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).

@@ -31,7 +31,8 @@ import (
 type ClusterApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
-	Spec                             *ClusterSpecApplyConfiguration `json:"spec,omitempty"`
+	Spec                             *ClusterSpecApplyConfiguration   `json:"spec,omitempty"`
+	Status                           *ClusterStatusApplyConfiguration `json:"status,omitempty"`
 }
 
 // Cluster constructs an declarative configuration of the Cluster type for use with
@@ -208,5 +209,13 @@ func (b *ClusterApplyConfiguration) ensureObjectMetaApplyConfigurationExists() {
 // If called multiple times, the Spec field is set to the value of the last call.
 func (b *ClusterApplyConfiguration) WithSpec(value *ClusterSpecApplyConfiguration) *ClusterApplyConfiguration {
 	b.Spec = value
+	return b
+}
+
+// WithStatus sets the Status field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Status field is set to the value of the last call.
+func (b *ClusterApplyConfiguration) WithStatus(value *ClusterStatusApplyConfiguration) *ClusterApplyConfiguration {
+	b.Status = value
 	return b
 }

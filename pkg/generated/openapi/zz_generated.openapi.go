@@ -131,11 +131,18 @@ func schema_kubeception_apis_clusters_v1beta1_Cluster(ref common.ReferenceCallba
 							Ref:         ref("github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterSpec"),
 						},
 					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Current status of a cluster. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterStatus"),
+						},
+					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterSpec", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+			"github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterSpec", "github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
 	}
 }
 
@@ -261,18 +268,9 @@ func schema_kubeception_apis_clusters_v1beta1_ClusterSpec(ref common.ReferenceCa
 							Format:      "",
 						},
 					},
-					"status": {
-						SchemaProps: spec.SchemaProps{
-							Description: "Current status of a cluster. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
-							Default:     map[string]interface{}{},
-							Ref:         ref("github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterStatus"),
-						},
-					},
 				},
 			},
 		},
-		Dependencies: []string{
-			"github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterStatus"},
 	}
 }
 
