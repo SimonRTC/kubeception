@@ -4,7 +4,7 @@ import (
 	"context"
 
 	clustersv1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
 	"github.com/SimonRTC/kubeception/pkg/aggregator"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
@@ -25,7 +25,7 @@ func init() {
 		klog.Fatalf("Unable to add `clusters` in version `v1beta1` into schema: %v", err)
 	}
 
-	if err := nodepoolsv1beta1.AddToScheme(s); err != nil {
+	if err := nodesv1beta1.AddToScheme(s); err != nil {
 		klog.Fatalf("Unable to add `nodepools` in version `v1beta1` into schema: %v", err)
 	}
 
