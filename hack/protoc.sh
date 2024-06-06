@@ -4,7 +4,7 @@ source "$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)/utils
 
 PKGS=(
     github.com/SimonRTC/kubeception/apis/clusters/v1beta1=kubeception.io.apis.clusters.v1beta1
-    github.com/SimonRTC/kubeception/apis/nodepools/v1beta1=kubeception.io.apis.nodepools.v1beta1
+    github.com/SimonRTC/kubeception/apis/nodes/v1beta1=kubeception.io.apis.nodes.v1beta1
 )
 
 APIMACHINERY_PKGS=(
