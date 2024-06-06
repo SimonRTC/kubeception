@@ -24,7 +24,7 @@ import (
 	"fmt"
 
 	v1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -59,9 +59,11 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	case v1beta1.SchemeGroupVersion.WithResource("clusters"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Clusters().V1beta1().Clusters().Informer()}, nil
 
-		// Group=nodepools.kubeception.io, Version=v1beta1
-	case nodepoolsv1beta1.SchemeGroupVersion.WithResource("nodepools"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Nodepools().V1beta1().NodePools().Informer()}, nil
+		// Group=nodes.kubeception.io, Version=v1beta1
+	case nodesv1beta1.SchemeGroupVersion.WithResource("nodes"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Nodes().V1beta1().Nodes().Informer()}, nil
+	case nodesv1beta1.SchemeGroupVersion.WithResource("nodepools"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Nodes().V1beta1().NodePools().Informer()}, nil
 
 	}
 

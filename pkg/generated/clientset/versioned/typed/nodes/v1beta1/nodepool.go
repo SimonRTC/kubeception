@@ -26,8 +26,8 @@ import (
 	"fmt"
 	"time"
 
-	v1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/nodepools/v1beta1"
+	v1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
+	nodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/nodes/v1beta1"
 	scheme "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
@@ -51,7 +51,7 @@ type NodePoolInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.NodePoolList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.NodePool, err error)
-	Apply(ctx context.Context, nodePool *nodepoolsv1beta1.NodePoolApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.NodePool, err error)
+	Apply(ctx context.Context, nodePool *nodesv1beta1.NodePoolApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.NodePool, err error)
 	NodePoolExpansion
 }
 
@@ -62,7 +62,7 @@ type nodePools struct {
 }
 
 // newNodePools returns a NodePools
-func newNodePools(c *NodepoolsV1beta1Client, namespace string) *nodePools {
+func newNodePools(c *NodesV1beta1Client, namespace string) *nodePools {
 	return &nodePools{
 		client: c.RESTClient(),
 		ns:     namespace,
@@ -184,7 +184,7 @@ func (c *nodePools) Patch(ctx context.Context, name string, pt types.PatchType, 
 }
 
 // Apply takes the given apply declarative configuration, applies it and returns the applied nodePool.
-func (c *nodePools) Apply(ctx context.Context, nodePool *nodepoolsv1beta1.NodePoolApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.NodePool, err error) {
+func (c *nodePools) Apply(ctx context.Context, nodePool *nodesv1beta1.NodePoolApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.NodePool, err error) {
 	if nodePool == nil {
 		return nil, fmt.Errorf("nodePool provided to Apply must not be nil")
 	}

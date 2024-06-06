@@ -22,9 +22,9 @@ package applyconfiguration
 
 import (
 	v1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
 	clustersv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/clusters/v1beta1"
-	applyconfigurationnodepoolsv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/nodepools/v1beta1"
+	applyconfigurationnodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/nodes/v1beta1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -42,11 +42,15 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 	case v1beta1.SchemeGroupVersion.WithKind("ClusterStatus"):
 		return &clustersv1beta1.ClusterStatusApplyConfiguration{}
 
-		// Group=nodepools.kubeception.io, Version=v1beta1
-	case nodepoolsv1beta1.SchemeGroupVersion.WithKind("NodePool"):
-		return &applyconfigurationnodepoolsv1beta1.NodePoolApplyConfiguration{}
-	case nodepoolsv1beta1.SchemeGroupVersion.WithKind("NodePoolSpec"):
-		return &applyconfigurationnodepoolsv1beta1.NodePoolSpecApplyConfiguration{}
+		// Group=nodes.kubeception.io, Version=v1beta1
+	case nodesv1beta1.SchemeGroupVersion.WithKind("Node"):
+		return &applyconfigurationnodesv1beta1.NodeApplyConfiguration{}
+	case nodesv1beta1.SchemeGroupVersion.WithKind("NodePool"):
+		return &applyconfigurationnodesv1beta1.NodePoolApplyConfiguration{}
+	case nodesv1beta1.SchemeGroupVersion.WithKind("NodePoolSpec"):
+		return &applyconfigurationnodesv1beta1.NodePoolSpecApplyConfiguration{}
+	case nodesv1beta1.SchemeGroupVersion.WithKind("NodeSpec"):
+		return &applyconfigurationnodesv1beta1.NodeSpecApplyConfiguration{}
 
 	}
 	return nil

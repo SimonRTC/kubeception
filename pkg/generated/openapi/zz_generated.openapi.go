@@ -36,9 +36,12 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterList":      schema_kubeception_apis_clusters_v1beta1_ClusterList(ref),
 		"github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterSpec":      schema_kubeception_apis_clusters_v1beta1_ClusterSpec(ref),
 		"github.com/SimonRTC/kubeception/apis/clusters/v1beta1.ClusterStatus":    schema_kubeception_apis_clusters_v1beta1_ClusterStatus(ref),
-		"github.com/SimonRTC/kubeception/apis/nodepools/v1beta1.NodePool":        schema_kubeception_apis_nodepools_v1beta1_NodePool(ref),
-		"github.com/SimonRTC/kubeception/apis/nodepools/v1beta1.NodePoolList":    schema_kubeception_apis_nodepools_v1beta1_NodePoolList(ref),
-		"github.com/SimonRTC/kubeception/apis/nodepools/v1beta1.NodePoolSpec":    schema_kubeception_apis_nodepools_v1beta1_NodePoolSpec(ref),
+		"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.Node":                schema_kubeception_apis_nodes_v1beta1_Node(ref),
+		"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodeList":            schema_kubeception_apis_nodes_v1beta1_NodeList(ref),
+		"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodePool":            schema_kubeception_apis_nodes_v1beta1_NodePool(ref),
+		"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodePoolList":        schema_kubeception_apis_nodes_v1beta1_NodePoolList(ref),
+		"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodePoolSpec":        schema_kubeception_apis_nodes_v1beta1_NodePoolSpec(ref),
+		"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodeSpec":            schema_kubeception_apis_nodes_v1beta1_NodeSpec(ref),
 		"k8s.io/apimachinery/pkg/apis/meta/v1.APIGroup":                          schema_pkg_apis_meta_v1_APIGroup(ref),
 		"k8s.io/apimachinery/pkg/apis/meta/v1.APIGroupList":                      schema_pkg_apis_meta_v1_APIGroupList(ref),
 		"k8s.io/apimachinery/pkg/apis/meta/v1.APIResource":                       schema_pkg_apis_meta_v1_APIResource(ref),
@@ -309,7 +312,7 @@ func schema_kubeception_apis_clusters_v1beta1_ClusterStatus(ref common.Reference
 	}
 }
 
-func schema_kubeception_apis_nodepools_v1beta1_NodePool(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_kubeception_apis_nodes_v1beta1_Node(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
@@ -338,20 +341,20 @@ func schema_kubeception_apis_nodepools_v1beta1_NodePool(ref common.ReferenceCall
 					},
 					"spec": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Specification of the desired behavior of a cluster.",
+							Description: "Specification of the desired behavior of a node.",
 							Default:     map[string]interface{}{},
-							Ref:         ref("github.com/SimonRTC/kubeception/apis/nodepools/v1beta1.NodePoolSpec"),
+							Ref:         ref("github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodeSpec"),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/SimonRTC/kubeception/apis/nodepools/v1beta1.NodePoolSpec", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+			"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodeSpec", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
 	}
 }
 
-func schema_kubeception_apis_nodepools_v1beta1_NodePoolList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_kubeception_apis_nodes_v1beta1_NodeList(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
@@ -380,13 +383,13 @@ func schema_kubeception_apis_nodepools_v1beta1_NodePoolList(ref common.Reference
 					},
 					"items": {
 						SchemaProps: spec.SchemaProps{
-							Description: "items is the list of Jobs.",
+							Description: "items is the list of node.",
 							Type:        []string{"array"},
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
 										Default: map[string]interface{}{},
-										Ref:     ref("github.com/SimonRTC/kubeception/apis/nodepools/v1beta1.NodePool"),
+										Ref:     ref("github.com/SimonRTC/kubeception/apis/nodes/v1beta1.Node"),
 									},
 								},
 							},
@@ -397,11 +400,103 @@ func schema_kubeception_apis_nodepools_v1beta1_NodePoolList(ref common.Reference
 			},
 		},
 		Dependencies: []string{
-			"github.com/SimonRTC/kubeception/apis/nodepools/v1beta1.NodePool", "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"},
+			"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.Node", "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"},
 	}
 }
 
-func schema_kubeception_apis_nodepools_v1beta1_NodePoolSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+func schema_kubeception_apis_nodes_v1beta1_NodePool(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Type: []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Specification of the desired behavior of a NodePool.",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodePoolSpec"),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodePoolSpec", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+	}
+}
+
+func schema_kubeception_apis_nodes_v1beta1_NodePoolList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Type: []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"),
+						},
+					},
+					"items": {
+						SchemaProps: spec.SchemaProps{
+							Description: "items is the list of NodePool.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodePool"),
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"items"},
+			},
+		},
+		Dependencies: []string{
+			"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodePool", "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"},
+	}
+}
+
+func schema_kubeception_apis_nodes_v1beta1_NodePoolSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
@@ -410,6 +505,26 @@ func schema_kubeception_apis_nodepools_v1beta1_NodePoolSpec(ref common.Reference
 					"version": {
 						SchemaProps: spec.SchemaProps{
 							Description: "Version of the nodepool.",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func schema_kubeception_apis_nodes_v1beta1_NodeSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Type: []string{"object"},
+				Properties: map[string]spec.Schema{
+					"version": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Version of the node.",
 							Default:     "",
 							Type:        []string{"string"},
 							Format:      "",

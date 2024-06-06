@@ -24,69 +24,69 @@ import (
 	"context"
 	time "time"
 
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
+	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
 	versioned "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned"
 	internalinterfaces "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/internalinterfaces"
-	v1beta1 "github.com/SimonRTC/kubeception/pkg/generated/listers/nodepools/v1beta1"
+	v1beta1 "github.com/SimonRTC/kubeception/pkg/generated/listers/nodes/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
 )
 
-// NodePoolInformer provides access to a shared informer and lister for
-// NodePools.
-type NodePoolInformer interface {
+// NodeInformer provides access to a shared informer and lister for
+// Nodes.
+type NodeInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1beta1.NodePoolLister
+	Lister() v1beta1.NodeLister
 }
 
-type nodePoolInformer struct {
+type nodeInformer struct {
 	factory          internalinterfaces.SharedInformerFactory
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
 	namespace        string
 }
 
-// NewNodePoolInformer constructs a new informer for NodePool type.
+// NewNodeInformer constructs a new informer for Node type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewNodePoolInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
-	return NewFilteredNodePoolInformer(client, namespace, resyncPeriod, indexers, nil)
+func NewNodeInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
+	return NewFilteredNodeInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
-// NewFilteredNodePoolInformer constructs a new informer for NodePool type.
+// NewFilteredNodeInformer constructs a new informer for Node type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewFilteredNodePoolInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
+func NewFilteredNodeInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
 	return cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options v1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.NodepoolsV1beta1().NodePools(namespace).List(context.TODO(), options)
+				return client.NodesV1beta1().Nodes(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.NodepoolsV1beta1().NodePools(namespace).Watch(context.TODO(), options)
+				return client.NodesV1beta1().Nodes(namespace).Watch(context.TODO(), options)
 			},
 		},
-		&nodepoolsv1beta1.NodePool{},
+		&nodesv1beta1.Node{},
 		resyncPeriod,
 		indexers,
 	)
 }
 
-func (f *nodePoolInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
-	return NewFilteredNodePoolInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
+func (f *nodeInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
+	return NewFilteredNodeInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
 }
 
-func (f *nodePoolInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&nodepoolsv1beta1.NodePool{}, f.defaultInformer)
+func (f *nodeInformer) Informer() cache.SharedIndexInformer {
+	return f.factory.InformerFor(&nodesv1beta1.Node{}, f.defaultInformer)
 }
 
-func (f *nodePoolInformer) Lister() v1beta1.NodePoolLister {
-	return v1beta1.NewNodePoolLister(f.Informer().GetIndexer())
+func (f *nodeInformer) Lister() v1beta1.NodeLister {
+	return v1beta1.NewNodeLister(f.Informer().GetIndexer())
 }

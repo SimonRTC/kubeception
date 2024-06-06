@@ -25,8 +25,8 @@ import (
 	json "encoding/json"
 	"fmt"
 
-	v1beta1 "github.com/SimonRTC/kubeception/apis/nodepools/v1beta1"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/nodepools/v1beta1"
+	v1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
+	nodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/nodes/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -36,7 +36,7 @@ import (
 
 // FakeNodePools implements NodePoolInterface
 type FakeNodePools struct {
-	Fake *FakeNodepoolsV1beta1
+	Fake *FakeNodesV1beta1
 	ns   string
 }
 
@@ -134,7 +134,7 @@ func (c *FakeNodePools) Patch(ctx context.Context, name string, pt types.PatchTy
 }
 
 // Apply takes the given apply declarative configuration, applies it and returns the applied nodePool.
-func (c *FakeNodePools) Apply(ctx context.Context, nodePool *nodepoolsv1beta1.NodePoolApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.NodePool, err error) {
+func (c *FakeNodePools) Apply(ctx context.Context, nodePool *nodesv1beta1.NodePoolApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.NodePool, err error) {
 	if nodePool == nil {
 		return nil, fmt.Errorf("nodePool provided to Apply must not be nil")
 	}

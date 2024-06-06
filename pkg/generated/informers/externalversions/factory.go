@@ -28,7 +28,7 @@ import (
 	versioned "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned"
 	clusters "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/clusters"
 	internalinterfaces "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/internalinterfaces"
-	nodepools "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/nodepools"
+	nodes "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/nodes"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -257,13 +257,13 @@ type SharedInformerFactory interface {
 	InformerFor(obj runtime.Object, newFunc internalinterfaces.NewInformerFunc) cache.SharedIndexInformer
 
 	Clusters() clusters.Interface
-	Nodepools() nodepools.Interface
+	Nodes() nodes.Interface
 }
 
 func (f *sharedInformerFactory) Clusters() clusters.Interface {
 	return clusters.New(f, f.namespace, f.tweakListOptions)
 }
 
-func (f *sharedInformerFactory) Nodepools() nodepools.Interface {
-	return nodepools.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Nodes() nodes.Interface {
+	return nodes.New(f, f.namespace, f.tweakListOptions)
 }

@@ -41,7 +41,7 @@ func NodePool(name, namespace string) *NodePoolApplyConfiguration {
 	b.WithName(name)
 	b.WithNamespace(namespace)
 	b.WithKind("NodePool")
-	b.WithAPIVersion("nodepools.kubeception.io/v1beta1")
+	b.WithAPIVersion("nodes.kubeception.io/v1beta1")
 	return b
 }
 

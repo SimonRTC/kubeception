@@ -21,22 +21,26 @@ limitations under the License.
 package fake
 
 import (
-	v1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodepools/v1beta1"
+	v1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodes/v1beta1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeNodepoolsV1beta1 struct {
+type FakeNodesV1beta1 struct {
 	*testing.Fake
 }
 
-func (c *FakeNodepoolsV1beta1) NodePools(namespace string) v1beta1.NodePoolInterface {
+func (c *FakeNodesV1beta1) Nodes(namespace string) v1beta1.NodeInterface {
+	return &FakeNodes{c, namespace}
+}
+
+func (c *FakeNodesV1beta1) NodePools(namespace string) v1beta1.NodePoolInterface {
 	return &FakeNodePools{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeNodepoolsV1beta1) RESTClient() rest.Interface {
+func (c *FakeNodesV1beta1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

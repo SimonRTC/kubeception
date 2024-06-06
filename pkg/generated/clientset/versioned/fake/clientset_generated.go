@@ -24,8 +24,8 @@ import (
 	clientset "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned"
 	clustersv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/clusters/v1beta1"
 	fakeclustersv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/clusters/v1beta1/fake"
-	nodepoolsv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodepools/v1beta1"
-	fakenodepoolsv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodepools/v1beta1/fake"
+	nodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodes/v1beta1"
+	fakenodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodes/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -88,7 +88,7 @@ func (c *Clientset) ClustersV1beta1() clustersv1beta1.ClustersV1beta1Interface {
 	return &fakeclustersv1beta1.FakeClustersV1beta1{Fake: &c.Fake}
 }
 
-// NodepoolsV1beta1 retrieves the NodepoolsV1beta1Client
-func (c *Clientset) NodepoolsV1beta1() nodepoolsv1beta1.NodepoolsV1beta1Interface {
-	return &fakenodepoolsv1beta1.FakeNodepoolsV1beta1{Fake: &c.Fake}
+// NodesV1beta1 retrieves the NodesV1beta1Client
+func (c *Clientset) NodesV1beta1() nodesv1beta1.NodesV1beta1Interface {
+	return &fakenodesv1beta1.FakeNodesV1beta1{Fake: &c.Fake}
 }
