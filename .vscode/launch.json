@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch APIServer",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/cmd/apiserver/main.go",
+            "env": {},
+            "args": []
+        },
+        {
+            "name": "Launch Lifecycle",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/cmd/lifecycle/main.go",
+            "env": {},
+            "args": []
+        }
+    ]
+}
