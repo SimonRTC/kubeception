@@ -35,8 +35,12 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 	// Group=clusters.kubeception.io, Version=v1beta1
 	case v1beta1.SchemeGroupVersion.WithKind("Cluster"):
 		return &clustersv1beta1.ClusterApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ClusterCondition"):
+		return &clustersv1beta1.ClusterConditionApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("ClusterSpec"):
 		return &clustersv1beta1.ClusterSpecApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ClusterStatus"):
+		return &clustersv1beta1.ClusterStatusApplyConfiguration{}
 
 		// Group=nodepools.kubeception.io, Version=v1beta1
 	case nodepoolsv1beta1.SchemeGroupVersion.WithKind("NodePool"):

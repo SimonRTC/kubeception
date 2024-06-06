@@ -40,13 +40,38 @@ message Cluster {
   optional ClusterSpec spec = 2;
 }
 
+// ClusterCondition describes current state of a cluster.
+message ClusterCondition {
+  // Type of cluster condition, Complete or Failed.
+  optional string type = 1;
+
+  // Status of the condition, one of True, False, Unknown.
+  optional string status = 2;
+
+  // Last time the condition was checked.
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time lastProbeTime = 3;
+
+  // Last time the condition transit from one status to another.
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time lastTransitionTime = 4;
+
+  // (brief) reason for the condition's last transition.
+  // +optional
+  optional string reason = 5;
+
+  // Human readable message indicating details about last transition.
+  // +optional
+  optional string message = 6;
+}
+
 message ClusterList {
   // Standard list metadata.
   // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
   // +optional
   optional k8s.io.apimachinery.pkg.apis.meta.v1.ListMeta metadata = 1;
 
-  // items is the list of Jobs.
+  // items is the list of clusters.
   repeated Cluster items = 2;
 }
 
@@ -54,5 +79,25 @@ message ClusterSpec {
   // Version of the cluster.
   // +optional
   optional string version = 1;
+
+  // Current status of a cluster.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional ClusterStatus status = 2;
+}
+
+// ClusterStatus represents the current state of a cluster.
+message ClusterStatus {
+  // The latest available observations of an object's current state. When a Cluster
+  // fails, one of the conditions will have type "Failed" and status true. When
+  // a Cluster is suspended, one of the conditions will have type "Suspended" and
+  // status true; when the Cluster is resumed, the status of this condition will
+  // become false.
+  //
+  // +optional
+  // +patchMergeKey=type
+  // +patchStrategy=merge
+  // +listType=atomic
+  repeated ClusterCondition conditions = 1;
 }
 

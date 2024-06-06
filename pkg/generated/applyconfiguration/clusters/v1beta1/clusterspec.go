@@ -23,7 +23,8 @@ package v1beta1
 // ClusterSpecApplyConfiguration represents an declarative configuration of the ClusterSpec type for use
 // with apply.
 type ClusterSpecApplyConfiguration struct {
-	Version *string `json:"version,omitempty"`
+	Version *string                          `json:"version,omitempty"`
+	Status  *ClusterStatusApplyConfiguration `json:"status,omitempty"`
 }
 
 // ClusterSpecApplyConfiguration constructs an declarative configuration of the ClusterSpec type for use with
@@ -37,5 +38,13 @@ func ClusterSpec() *ClusterSpecApplyConfiguration {
 // If called multiple times, the Version field is set to the value of the last call.
 func (b *ClusterSpecApplyConfiguration) WithVersion(value string) *ClusterSpecApplyConfiguration {
 	b.Version = &value
+	return b
+}
+
+// WithStatus sets the Status field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Status field is set to the value of the last call.
+func (b *ClusterSpecApplyConfiguration) WithStatus(value *ClusterStatusApplyConfiguration) *ClusterSpecApplyConfiguration {
+	b.Status = value
 	return b
 }
