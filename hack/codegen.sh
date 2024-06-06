@@ -6,17 +6,18 @@ kube::codegen::gen_helpers \
     --boilerplate "${SCRIPT_DIR}/boilerplate.go.txt" \
     "${PROJECT_DIR}"
 
-if [[ -n "${API_KNOWN_VIOLATIONS_DIR:-}" ]]; then
-    report_filename="${API_KNOWN_VIOLATIONS_DIR}/codegen_violation_exceptions.list"
-    if [[ "${UPDATE_API_KNOWN_VIOLATIONS:-}" == "true" ]]; then
-        update_report="--update-report"
-    fi
-fi
-
 kube::codegen::gen_client \
     --with-watch \
     --with-applyconfig \
     --boilerplate "${SCRIPT_DIR}/boilerplate.go.txt" \
-    --output-dir "${PROJECT_DIR}/client" \
-    --output-pkg "github.com/SimonRTC/kubeception/client" \
+    --output-dir "${PROJECT_DIR}/pkg/generated" \
+    --output-pkg "github.com/SimonRTC/kubeception/pkg/generated" \
+    "${PROJECT_DIR}/apis"
+
+kube::codegen::gen_openapi \
+    --update-report \
+    --report-filename "${SCRIPT_DIR}/codegen_violation_exceptions.list" \
+    --boilerplate "${SCRIPT_DIR}/boilerplate.go.txt" \
+    --output-dir "${PROJECT_DIR}/pkg/generated/openapi" \
+    --output-pkg "github.com/SimonRTC/kubeception/pkg/generated/openapi" \
     "${PROJECT_DIR}/apis"
