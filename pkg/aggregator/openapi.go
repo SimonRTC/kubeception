@@ -2,6 +2,7 @@ package aggregator
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/SimonRTC/kubeception/pkg/generated/openapi"
@@ -28,7 +29,18 @@ func GenerateOpenAPIConfig(ws []*restful.WebService) (*spec.Swagger, error) {
 
 		// Rewrite "OperationID" is required to prevent build failure from duplication
 		GetOperationIDAndTagsFromRoute: func(r common.Route) (string, []string, error) {
-			return strings.Replace(r.Path(), "/", "_", -1) + "_" + strings.ToLower(r.Method()), []string{r.Path()}, nil
+
+			// Prevent injecting varialilized path section in tags
+			re := regexp.MustCompile(`\{[a-zA-Z0-9\-._~]*\}`)
+			tags := strings.Split(strings.Trim(r.Path(), "/"), "/")
+			for i, t := range tags {
+				if re.MatchString(t) {
+					tags[i] = tags[len(tags)-1]
+					tags = tags[:len(tags)-1]
+				}
+			}
+
+			return strings.Replace(r.Path(), "/", "_", -1) + "_" + strings.ToLower(r.Method()), tags, nil
 		},
 	}
 
