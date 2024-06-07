@@ -37,11 +37,10 @@ func GenerateOpenAPIConfig(ws []*restful.WebService) (*spec.Swagger, error) {
 
 			// Prevent injecting varialilized path section in tags
 			re := regexp.MustCompile(`\{[a-zA-Z0-9\-._~]*\}`)
-			tags := strings.Split(strings.Trim(r.Path(), "/"), "/")
-			for i, t := range tags {
-				if re.MatchString(t) {
-					tags[i] = tags[len(tags)-1]
-					tags = tags[:len(tags)-1]
+			tags := []string{}
+			for _, t := range strings.Split(strings.Trim(r.Path(), "/"), "/") {
+				if !re.MatchString(t) {
+					tags = append(tags, t)
 				}
 			}
 
