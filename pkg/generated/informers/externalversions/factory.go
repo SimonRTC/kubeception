@@ -29,6 +29,7 @@ import (
 	clusters "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/clusters"
 	internalinterfaces "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/internalinterfaces"
 	nodes "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/nodes"
+	storage "github.com/SimonRTC/kubeception/pkg/generated/informers/externalversions/storage"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -258,6 +259,7 @@ type SharedInformerFactory interface {
 
 	Clusters() clusters.Interface
 	Nodes() nodes.Interface
+	Storage() storage.Interface
 }
 
 func (f *sharedInformerFactory) Clusters() clusters.Interface {
@@ -266,4 +268,8 @@ func (f *sharedInformerFactory) Clusters() clusters.Interface {
 
 func (f *sharedInformerFactory) Nodes() nodes.Interface {
 	return nodes.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Storage() storage.Interface {
+	return storage.New(f, f.namespace, f.tweakListOptions)
 }

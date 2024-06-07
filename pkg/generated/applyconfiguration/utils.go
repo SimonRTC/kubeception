@@ -23,8 +23,10 @@ package applyconfiguration
 import (
 	v1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
 	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
+	storagev1beta1 "github.com/SimonRTC/kubeception/apis/storage/v1beta1"
 	clustersv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/clusters/v1beta1"
 	applyconfigurationnodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/nodes/v1beta1"
+	applyconfigurationstoragev1beta1 "github.com/SimonRTC/kubeception/pkg/generated/applyconfiguration/storage/v1beta1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -51,6 +53,12 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationnodesv1beta1.NodePoolSpecApplyConfiguration{}
 	case nodesv1beta1.SchemeGroupVersion.WithKind("NodeSpec"):
 		return &applyconfigurationnodesv1beta1.NodeSpecApplyConfiguration{}
+
+		// Group=storage.kubeception.io, Version=v1beta1
+	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackend"):
+		return &applyconfigurationstoragev1beta1.StorageBackendApplyConfiguration{}
+	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackendSpec"):
+		return &applyconfigurationstoragev1beta1.StorageBackendSpecApplyConfiguration{}
 
 	}
 	return nil

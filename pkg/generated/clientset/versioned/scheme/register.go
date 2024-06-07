@@ -23,6 +23,7 @@ package scheme
 import (
 	clustersv1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
 	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
+	storagev1beta1 "github.com/SimonRTC/kubeception/apis/storage/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -36,6 +37,7 @@ var ParameterCodec = runtime.NewParameterCodec(Scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
 	clustersv1beta1.AddToScheme,
 	nodesv1beta1.AddToScheme,
+	storagev1beta1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

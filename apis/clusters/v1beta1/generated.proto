@@ -101,3 +101,59 @@ message ClusterStatus {
   repeated ClusterCondition conditions = 1;
 }
 
+message HelmConsumerTemplate {
+}
+
+message HelmControlPlaneTemplate {
+  // The address/hostname on which to advertise the kube-apiserver of the consumer cluster (must be accessible from both management and consumer cluster)
+  optional string advertise = 1;
+
+  // Open ID Connect (Single Sign-On)
+  // +optional
+  optional OpenID oidc = 2;
+}
+
+message HelmTemplate {
+  // Standard object's metadata.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.ObjectMeta metadata = 1;
+
+  // Containers image registry (must be accessible from both management and consumer cluster)
+  // +optional
+  optional string registry = 2;
+
+  // Kubernetes control plane template (kube-apiserver, kube-controller-manager, ...)
+  // +optional
+  optional HelmControlPlaneTemplate controlPlan = 3;
+
+  // Kubernetes consumer cluster template (coredns, cni, csi, ...)
+  // +optional
+  optional HelmConsumerTemplate consumer = 4;
+}
+
+message OpenID {
+  // The URL of the OpenID issuer, only HTTPS scheme will be accepted. If set, it will be used to verify the OIDC JSON Web Token (JWT).
+  optional string issuer = 1;
+
+  // Comma-separated list of allowed JOSE asymmetric signing algorithms. JWTs with a supported 'alg' header values are: RS256, RS384, RS512, ES256, ES384, ES512, PS256, PS384, PS512. Values are defined by RFC 7518 https://tools.ietf.org/html/rfc7518#section-3.1.
+  optional string algs = 2;
+
+  // Name of the secret projected inside of the management cluster (automatically created when OpenID is configured)
+  optional string secretName = 3;
+
+  // The OpenID claim to use as the user name. Note that claims other than the default ('sub') is not guaranteed to be unique and immutable.
+  optional OpenIDPrefix username = 4;
+
+  // If provided, the name of a custom OpenID Connect claim for specifying user groups.
+  optional OpenIDPrefix groups = 5;
+}
+
+message OpenIDPrefix {
+  // The OpenID claim to use
+  optional string name = 1;
+
+  // Prefix is use to avoid collision with existing internal role bindings (group `example` become `oidc:example`).
+  optional string prefix = 2;
+}
+

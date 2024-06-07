@@ -26,6 +26,8 @@ import (
 	fakeclustersv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/clusters/v1beta1/fake"
 	nodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodes/v1beta1"
 	fakenodesv1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/nodes/v1beta1/fake"
+	storagev1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/storage/v1beta1"
+	fakestoragev1beta1 "github.com/SimonRTC/kubeception/pkg/generated/clientset/versioned/typed/storage/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -91,4 +93,9 @@ func (c *Clientset) ClustersV1beta1() clustersv1beta1.ClustersV1beta1Interface {
 // NodesV1beta1 retrieves the NodesV1beta1Client
 func (c *Clientset) NodesV1beta1() nodesv1beta1.NodesV1beta1Interface {
 	return &fakenodesv1beta1.FakeNodesV1beta1{Fake: &c.Fake}
+}
+
+// StorageV1beta1 retrieves the StorageV1beta1Client
+func (c *Clientset) StorageV1beta1() storagev1beta1.StorageV1beta1Interface {
+	return &fakestoragev1beta1.FakeStorageV1beta1{Fake: &c.Fake}
 }

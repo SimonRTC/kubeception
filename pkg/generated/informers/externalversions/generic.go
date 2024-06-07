@@ -25,6 +25,7 @@ import (
 
 	v1beta1 "github.com/SimonRTC/kubeception/apis/clusters/v1beta1"
 	nodesv1beta1 "github.com/SimonRTC/kubeception/apis/nodes/v1beta1"
+	storagev1beta1 "github.com/SimonRTC/kubeception/apis/storage/v1beta1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -64,6 +65,10 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Nodes().V1beta1().Nodes().Informer()}, nil
 	case nodesv1beta1.SchemeGroupVersion.WithResource("nodepools"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Nodes().V1beta1().NodePools().Informer()}, nil
+
+		// Group=storage.kubeception.io, Version=v1beta1
+	case storagev1beta1.SchemeGroupVersion.WithResource("storagebackends"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Storage().V1beta1().StorageBackends().Informer()}, nil
 
 	}
 

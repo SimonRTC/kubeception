@@ -113,3 +113,66 @@ type ClusterCondition struct {
 	// +optional
 	Message string `json:"message,omitempty" protobuf:"bytes,6,opt,name=message"`
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +k8s:prerelease-lifecycle-gen:introduced=1.0.0
+
+type HelmTemplate struct {
+	metav1.TypeMeta `json:",inline"`
+
+	// Standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Containers image registry (must be accessible from both management and consumer cluster)
+	// +optional
+	Registry string `json:"registry,omitempty" protobuf:"bytes,2,opt,name=registry"`
+
+	// Kubernetes control plane template (kube-apiserver, kube-controller-manager, ...)
+	// +optional
+	ControlPlan HelmControlPlaneTemplate `json:"controlPlan,omitempty" protobuf:"bytes,3,opt,name=controlPlan"`
+
+	// Kubernetes consumer cluster template (coredns, cni, csi, ...)
+	// +optional
+	Consumer HelmConsumerTemplate `json:"consumer,omitempty" protobuf:"bytes,4,opt,name=consumer"`
+}
+
+type HelmControlPlaneTemplate struct {
+
+	// The address/hostname on which to advertise the kube-apiserver of the consumer cluster (must be accessible from both management and consumer cluster)
+	Advertise string `json:"advertise,omitempty" protobuf:"bytes,1,opt,name=advertise"`
+
+	// Open ID Connect (Single Sign-On)
+	// +optional
+	OpenID OpenID `json:"oidc,omitempty" protobuf:"bytes,2,opt,name=oidc"`
+}
+
+type OpenID struct {
+	// The URL of the OpenID issuer, only HTTPS scheme will be accepted. If set, it will be used to verify the OIDC JSON Web Token (JWT).
+	Issuer string `json:"issuer,omitempty" protobuf:"bytes,1,opt,name=issuer"`
+
+	// Comma-separated list of allowed JOSE asymmetric signing algorithms. JWTs with a supported 'alg' header values are: RS256, RS384, RS512, ES256, ES384, ES512, PS256, PS384, PS512. Values are defined by RFC 7518 https://tools.ietf.org/html/rfc7518#section-3.1.
+	Algs string `json:"algs,omitempty" protobuf:"bytes,2,opt,name=algs"`
+
+	// Name of the secret projected inside of the management cluster (automatically created when OpenID is configured)
+	SecretName string `json:"secretName,omitempty" protobuf:"bytes,3,opt,name=secretName"`
+
+	// The OpenID claim to use as the user name. Note that claims other than the default ('sub') is not guaranteed to be unique and immutable.
+	Username OpenIDPrefix `json:"username,omitempty" protobuf:"bytes,4,opt,name=username"`
+
+	// If provided, the name of a custom OpenID Connect claim for specifying user groups.
+	Groups OpenIDPrefix `json:"groups,omitempty" protobuf:"bytes,5,opt,name=groups"`
+}
+
+type OpenIDPrefix struct {
+	// The OpenID claim to use
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+
+	// Prefix is use to avoid collision with existing internal role bindings (group `example` become `oidc:example`).
+	Prefix string `json:"prefix,omitempty" protobuf:"bytes,2,opt,name=prefix"`
+}
+
+type HelmConsumerTemplate struct {
+	// Must be implemented soon
+}
