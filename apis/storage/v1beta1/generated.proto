@@ -40,6 +40,17 @@ message StorageBackend {
   optional StorageBackendSpec spec = 2;
 }
 
+message StorageBackendCertificates {
+  // Certificate Authority used to secure etcd communication.
+  optional string ca = 1;
+
+  // Certification file used to secure etcd communication.
+  optional string cert = 2;
+
+  // Private key used to secure etcd communication.
+  optional string key = 3;
+}
+
 message StorageBackendList {
   // Standard list metadata.
   // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
@@ -57,6 +68,6 @@ message StorageBackendSpec {
 
   // Certificates used to secure etcd communication.
   // +optional
-  optional string certificates = 2;
+  optional StorageBackendCertificates certificates = 2;
 }
 

@@ -57,6 +57,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		// Group=storage.kubeception.io, Version=v1beta1
 	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackend"):
 		return &applyconfigurationstoragev1beta1.StorageBackendApplyConfiguration{}
+	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackendCertificates"):
+		return &applyconfigurationstoragev1beta1.StorageBackendCertificatesApplyConfiguration{}
 	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackendSpec"):
 		return &applyconfigurationstoragev1beta1.StorageBackendSpecApplyConfiguration{}
 

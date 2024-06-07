@@ -43,5 +43,16 @@ type StorageBackendSpec struct {
 
 	// Certificates used to secure etcd communication.
 	// +optional
-	Certificates string `json:"certificates" protobuf:"bytes,2,opt,name=certificates"`
+	Certificates StorageBackendCertificates `json:"certificates" protobuf:"bytes,2,opt,name=certificates"`
+}
+
+type StorageBackendCertificates struct {
+	// Certificate Authority used to secure etcd communication.
+	CA string `json:"ca" protobuf:"bytes,1,opt,name=ca"`
+
+	// Certification file used to secure etcd communication.
+	Cert string `json:"cert" protobuf:"bytes,2,opt,name=cert"`
+
+	// Private key used to secure etcd communication.
+	Key string `json:"key" protobuf:"bytes,3,opt,name=key"`
 }

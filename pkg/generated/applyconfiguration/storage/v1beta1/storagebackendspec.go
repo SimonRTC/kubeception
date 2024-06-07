@@ -23,8 +23,8 @@ package v1beta1
 // StorageBackendSpecApplyConfiguration represents an declarative configuration of the StorageBackendSpec type for use
 // with apply.
 type StorageBackendSpecApplyConfiguration struct {
-	Endpoints    []string `json:"endpoints,omitempty"`
-	Certificates *string  `json:"certificates,omitempty"`
+	Endpoints    []string                                      `json:"endpoints,omitempty"`
+	Certificates *StorageBackendCertificatesApplyConfiguration `json:"certificates,omitempty"`
 }
 
 // StorageBackendSpecApplyConfiguration constructs an declarative configuration of the StorageBackendSpec type for use with
@@ -46,7 +46,7 @@ func (b *StorageBackendSpecApplyConfiguration) WithEndpoints(values ...string) *
 // WithCertificates sets the Certificates field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Certificates field is set to the value of the last call.
-func (b *StorageBackendSpecApplyConfiguration) WithCertificates(value string) *StorageBackendSpecApplyConfiguration {
-	b.Certificates = &value
+func (b *StorageBackendSpecApplyConfiguration) WithCertificates(value *StorageBackendCertificatesApplyConfiguration) *StorageBackendSpecApplyConfiguration {
+	b.Certificates = value
 	return b
 }
