@@ -31,7 +31,8 @@ import (
 type StorageBackendApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
-	Spec                             *StorageBackendSpecApplyConfiguration `json:"spec,omitempty"`
+	Spec                             *StorageBackendSpecApplyConfiguration   `json:"spec,omitempty"`
+	Status                           *StorageBackendStatusApplyConfiguration `json:"status,omitempty"`
 }
 
 // StorageBackend constructs an declarative configuration of the StorageBackend type for use with
@@ -208,5 +209,13 @@ func (b *StorageBackendApplyConfiguration) ensureObjectMetaApplyConfigurationExi
 // If called multiple times, the Spec field is set to the value of the last call.
 func (b *StorageBackendApplyConfiguration) WithSpec(value *StorageBackendSpecApplyConfiguration) *StorageBackendApplyConfiguration {
 	b.Spec = value
+	return b
+}
+
+// WithStatus sets the Status field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Status field is set to the value of the last call.
+func (b *StorageBackendApplyConfiguration) WithStatus(value *StorageBackendStatusApplyConfiguration) *StorageBackendApplyConfiguration {
+	b.Status = value
 	return b
 }

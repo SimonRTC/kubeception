@@ -45,6 +45,7 @@ type StorageBackendsGetter interface {
 type StorageBackendInterface interface {
 	Create(ctx context.Context, storageBackend *v1beta1.StorageBackend, opts v1.CreateOptions) (*v1beta1.StorageBackend, error)
 	Update(ctx context.Context, storageBackend *v1beta1.StorageBackend, opts v1.UpdateOptions) (*v1beta1.StorageBackend, error)
+	UpdateStatus(ctx context.Context, storageBackend *v1beta1.StorageBackend, opts v1.UpdateOptions) (*v1beta1.StorageBackend, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
 	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.StorageBackend, error)
@@ -52,6 +53,7 @@ type StorageBackendInterface interface {
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.StorageBackend, err error)
 	Apply(ctx context.Context, storageBackend *storagev1beta1.StorageBackendApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.StorageBackend, err error)
+	ApplyStatus(ctx context.Context, storageBackend *storagev1beta1.StorageBackendApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.StorageBackend, err error)
 	StorageBackendExpansion
 }
 
@@ -141,6 +143,22 @@ func (c *storageBackends) Update(ctx context.Context, storageBackend *v1beta1.St
 	return
 }
 
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *storageBackends) UpdateStatus(ctx context.Context, storageBackend *v1beta1.StorageBackend, opts v1.UpdateOptions) (result *v1beta1.StorageBackend, err error) {
+	result = &v1beta1.StorageBackend{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("storagebackends").
+		Name(storageBackend.Name).
+		SubResource("status").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(storageBackend).
+		Do(ctx).
+		Into(result)
+	return
+}
+
 // Delete takes name of the storageBackend and deletes it. Returns an error if one occurs.
 func (c *storageBackends) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	return c.client.Delete().
@@ -202,6 +220,36 @@ func (c *storageBackends) Apply(ctx context.Context, storageBackend *storagev1be
 		Namespace(c.ns).
 		Resource("storagebackends").
 		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *storageBackends) ApplyStatus(ctx context.Context, storageBackend *storagev1beta1.StorageBackendApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.StorageBackend, err error) {
+	if storageBackend == nil {
+		return nil, fmt.Errorf("storageBackend provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(storageBackend)
+	if err != nil {
+		return nil, err
+	}
+
+	name := storageBackend.Name
+	if name == nil {
+		return nil, fmt.Errorf("storageBackend.Name must be provided to Apply")
+	}
+
+	result = &v1beta1.StorageBackend{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("storagebackends").
+		Name(*name).
+		SubResource("status").
 		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).

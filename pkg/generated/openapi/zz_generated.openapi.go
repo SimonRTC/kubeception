@@ -49,8 +49,10 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/SimonRTC/kubeception/apis/nodes/v1beta1.NodeSpec":                     schema_kubeception_apis_nodes_v1beta1_NodeSpec(ref),
 		"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackend":             schema_kubeception_apis_storage_v1beta1_StorageBackend(ref),
 		"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendCertificates": schema_kubeception_apis_storage_v1beta1_StorageBackendCertificates(ref),
+		"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendCondition":    schema_kubeception_apis_storage_v1beta1_StorageBackendCondition(ref),
 		"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendList":         schema_kubeception_apis_storage_v1beta1_StorageBackendList(ref),
 		"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendSpec":         schema_kubeception_apis_storage_v1beta1_StorageBackendSpec(ref),
+		"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendStatus":       schema_kubeception_apis_storage_v1beta1_StorageBackendStatus(ref),
 		"k8s.io/apimachinery/pkg/apis/meta/v1.APIGroup":                                   schema_pkg_apis_meta_v1_APIGroup(ref),
 		"k8s.io/apimachinery/pkg/apis/meta/v1.APIGroupList":                               schema_pkg_apis_meta_v1_APIGroupList(ref),
 		"k8s.io/apimachinery/pkg/apis/meta/v1.APIResource":                                schema_pkg_apis_meta_v1_APIResource(ref),
@@ -746,11 +748,18 @@ func schema_kubeception_apis_storage_v1beta1_StorageBackend(ref common.Reference
 							Ref:         ref("github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendSpec"),
 						},
 					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Current status of a StorageBackend. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendStatus"),
+						},
+					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendSpec", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+			"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendSpec", "github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
 	}
 }
 
@@ -788,6 +797,64 @@ func schema_kubeception_apis_storage_v1beta1_StorageBackendCertificates(ref comm
 				Required: []string{"ca", "cert", "key"},
 			},
 		},
+	}
+}
+
+func schema_kubeception_apis_storage_v1beta1_StorageBackendCondition(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "StorageBackendCondition describes current state of a backend.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"type": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Type of backend condition, Complete or Failed.",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Status of the condition, one of True, False, Unknown.",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"lastProbeTime": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Last time the condition was checked.",
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"lastTransitionTime": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Last time the condition transit from one status to another.",
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"reason": {
+						SchemaProps: spec.SchemaProps{
+							Description: "(brief) reason for the condition's last transition.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"message": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Human readable message indicating details about last transition.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"type", "status"},
+			},
+		},
+		Dependencies: []string{
+			"k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
 	}
 }
 
@@ -874,6 +941,42 @@ func schema_kubeception_apis_storage_v1beta1_StorageBackendSpec(ref common.Refer
 		},
 		Dependencies: []string{
 			"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendCertificates"},
+	}
+}
+
+func schema_kubeception_apis_storage_v1beta1_StorageBackendStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "StorageBackendStatus represents the current state of a storage backend.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"conditions": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type":       "atomic",
+								"x-kubernetes-patch-merge-key": "type",
+								"x-kubernetes-patch-strategy":  "merge",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "The latest available observations of an object's current state. When a StorageBackend fails, one of the conditions will have type \"Failed\" and status true. When a StorageBackend is unhealthy, one of the conditions will have type \"Healthy\" and status false; when the StorageBackend is resumed, the status of this condition will become false.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendCondition"),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/SimonRTC/kubeception/apis/storage/v1beta1.StorageBackendCondition"},
 	}
 }
 

@@ -106,6 +106,18 @@ func (c *FakeStorageBackends) Update(ctx context.Context, storageBackend *v1beta
 	return obj.(*v1beta1.StorageBackend), err
 }
 
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *FakeStorageBackends) UpdateStatus(ctx context.Context, storageBackend *v1beta1.StorageBackend, opts v1.UpdateOptions) (*v1beta1.StorageBackend, error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewUpdateSubresourceAction(storagebackendsResource, "status", c.ns, storageBackend), &v1beta1.StorageBackend{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.StorageBackend), err
+}
+
 // Delete takes name of the storageBackend and deletes it. Returns an error if one occurs.
 func (c *FakeStorageBackends) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
@@ -148,6 +160,29 @@ func (c *FakeStorageBackends) Apply(ctx context.Context, storageBackend *storage
 	}
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(storagebackendsResource, c.ns, *name, types.ApplyPatchType, data), &v1beta1.StorageBackend{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.StorageBackend), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeStorageBackends) ApplyStatus(ctx context.Context, storageBackend *storagev1beta1.StorageBackendApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.StorageBackend, err error) {
+	if storageBackend == nil {
+		return nil, fmt.Errorf("storageBackend provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(storageBackend)
+	if err != nil {
+		return nil, err
+	}
+	name := storageBackend.Name
+	if name == nil {
+		return nil, fmt.Errorf("storageBackend.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(storagebackendsResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1beta1.StorageBackend{})
 
 	if obj == nil {
 		return nil, err

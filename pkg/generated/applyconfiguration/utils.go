@@ -59,8 +59,12 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationstoragev1beta1.StorageBackendApplyConfiguration{}
 	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackendCertificates"):
 		return &applyconfigurationstoragev1beta1.StorageBackendCertificatesApplyConfiguration{}
+	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackendCondition"):
+		return &applyconfigurationstoragev1beta1.StorageBackendConditionApplyConfiguration{}
 	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackendSpec"):
 		return &applyconfigurationstoragev1beta1.StorageBackendSpecApplyConfiguration{}
+	case storagev1beta1.SchemeGroupVersion.WithKind("StorageBackendStatus"):
+		return &applyconfigurationstoragev1beta1.StorageBackendStatusApplyConfiguration{}
 
 	}
 	return nil

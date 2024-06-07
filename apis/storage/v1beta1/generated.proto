@@ -38,6 +38,11 @@ message StorageBackend {
   // Specification of the desired behavior of a StorageBackend.
   // +optional
   optional StorageBackendSpec spec = 2;
+
+  // Current status of a StorageBackend.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional StorageBackendStatus status = 3;
 }
 
 message StorageBackendCertificates {
@@ -49,6 +54,31 @@ message StorageBackendCertificates {
 
   // Private key used to secure etcd communication.
   optional string key = 3;
+}
+
+// StorageBackendCondition describes current state of a backend.
+message StorageBackendCondition {
+  // Type of backend condition, Complete or Failed.
+  optional string type = 1;
+
+  // Status of the condition, one of True, False, Unknown.
+  optional string status = 2;
+
+  // Last time the condition was checked.
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time lastProbeTime = 3;
+
+  // Last time the condition transit from one status to another.
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time lastTransitionTime = 4;
+
+  // (brief) reason for the condition's last transition.
+  // +optional
+  optional string reason = 5;
+
+  // Human readable message indicating details about last transition.
+  // +optional
+  optional string message = 6;
 }
 
 message StorageBackendList {
@@ -69,5 +99,20 @@ message StorageBackendSpec {
   // Certificates used to secure etcd communication.
   // +optional
   optional StorageBackendCertificates certificates = 2;
+}
+
+// StorageBackendStatus represents the current state of a storage backend.
+message StorageBackendStatus {
+  // The latest available observations of an object's current state. When a StorageBackend
+  // fails, one of the conditions will have type "Failed" and status true. When
+  // a StorageBackend is unhealthy, one of the conditions will have type "Healthy" and
+  // status false; when the StorageBackend is resumed, the status of this condition will
+  // become false.
+  //
+  // +optional
+  // +patchMergeKey=type
+  // +patchStrategy=merge
+  // +listType=atomic
+  repeated StorageBackendCondition conditions = 1;
 }
 
