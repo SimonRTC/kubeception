@@ -19,8 +19,13 @@ func GenerateOpenAPIConfig(ws []*restful.WebService) (*spec.Swagger, error) {
 	c := &common.Config{
 		Info: &spec.Info{
 			InfoProps: spec.InfoProps{
-				Title:   "kubeception",
-				Version: "v1.0.0",
+				Title:       "kubeception",
+				Description: "kubeception is an advanced project leveraging Kubernetes architectures to provide a robust API for creating and managing Kubernetes clusters.",
+				Version:     "v1.0.0",
+				License: &spec.License{
+					Name: "Apache 2.0",
+					URL:  "http://www.apache.org/licenses/LICENSE-2.0.html",
+				},
 			},
 		},
 
